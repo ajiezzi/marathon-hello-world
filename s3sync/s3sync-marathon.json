@@ -1,0 +1,54 @@
+{
+  "id": "/hello-world/s3sync",
+  "instances": 1,
+  "cpus": 2,
+  "mem": 4096,
+  "disk": 0,
+  "gpus": 0,
+  "constraints": [],
+  "fetch": [],
+  "storeUrls": [],
+  "backoffSeconds": 1,
+  "backoffFactor": 1.15,
+  "maxLaunchDelaySeconds": 3600,
+  "container": {
+    "type": "DOCKER",
+    "volumes": [],
+    "docker": {
+      "image": "adamiezzi/s3sync:latest",
+      "portMappings": [],
+      "parameters": [],
+      "forcePullImage": true
+    }
+  },
+  "killSelection": "YOUNGEST_FIRST",
+  "portDefinitions": [],
+  "requirePorts": false,
+  "env": {
+    "AWS_ACCESS_KEY_ID": "<AWS_ACCESS_KEY_ID>",
+    "AWS_SECRET_ACCESS_KEY": "<AWS_SECRET_ACCESS_KEY>",
+    "AWS_DEFAULT_REGION": "us-east-1",
+    "INTERVAL": "30",
+    "SOURCE_BUCKET": "<SOURCE-BUCKET-NAME>",
+    "DESTINATION_BUCKET": "<DESTINATION-BUCKET-NAME>"
+  },
+  "networks": [
+    {
+      "mode": "host"
+    }
+  ],
+  "secrets": {},
+  "healthChecks": [
+    {
+      "gracePeriodSeconds": 90,
+      "intervalSeconds": 60,
+      "maxConsecutiveFailures": 3,
+      "timeoutSeconds": 30,
+      "delaySeconds": 10,
+      "protocol": "COMMAND",
+      "command": {
+        "value": "source /s3sync/healthcheck.sh"
+      }
+    }
+  ]
+}

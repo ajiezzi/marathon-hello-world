@@ -1,0 +1,53 @@
+{
+  "AWSTemplateFormatVersion": "2010-09-09",
+  "Description": "Example AWS CloudFormation Template used to create two distinct S3 buckets",
+  "Parameters": {
+    "SourceName": {
+      "Type": "String",
+      "Description": "Name of the S3 bucket for the source data",
+      "AllowedPattern": "[-a-z0-9]*"
+    },
+    "DestinationName": {
+      "Type": "String",
+      "Description": "Name of the S3 bucket for the destination data",
+      "AllowedPattern": "[-a-z0-9]*"
+    },
+    "BillingTag": {
+      "Type": "String",
+      "Default": "hello-world",
+      "Description": "Billing tag for services"
+    }
+  },
+  "Resources": {
+    "SourceS3Bucket" : {
+      "Type": "AWS::S3::Bucket",
+      "Properties": {
+        "BucketName": { "Ref": "SourceName" },
+        "Tags": [
+          {
+            "Key": "billing", "Value": { "Ref": "BillingTag" }
+          }
+        ]
+      }
+    },
+    "DestinationS3Bucket" : {
+      "Type": "AWS::S3::Bucket",
+      "Properties": {
+        "BucketName": { "Ref": "DestinationName" },
+        "Tags": [
+          {
+            "Key": "billing", "Value": { "Ref": "BillingTag" }
+          }
+        ]
+      }
+    }
+  },
+  "Outputs" : {
+    "SourceBucketName": {
+      "Value": { "Ref": "SourceS3Bucket" }
+    },
+    "DestinationBucketName": {
+      "Value": { "Ref": "DestinationS3Bucket" }
+    }
+  }
+}
